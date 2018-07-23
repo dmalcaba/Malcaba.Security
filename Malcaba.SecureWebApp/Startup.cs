@@ -37,7 +37,13 @@ namespace Malcaba.SecureWebApp
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<IdentityUser>()
+
+            // use options to override Password rules
+            services.AddDefaultIdentity<IdentityUser>(options =>
+                { 
+                    options.Password.RequiredLength = 8;
+                    options.Password.RequireNonAlphanumeric = false;
+                })
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
